@@ -1,0 +1,14 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: metallb
+  namespace: metallb-system
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: metallb
+      version: "0.16.2"   # pin to a specific version you've checked
+      sourceRef:
+        kind: HelmRepository
+        name: metallb
