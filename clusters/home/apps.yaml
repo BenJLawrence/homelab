@@ -23,6 +23,8 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m
+  dependsOn:
+    - name: cert-manager-config   # the Ingress annotation needs the ClusterIssuer
   path: ./apps/romm
   prune: true
   wait: true

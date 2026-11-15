@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: romm
+  namespace: romm
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-staging   # switch to prod once it works
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: romm.draggle-labs.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: romm
+                port:
+                  number: 80
+  tls:
+    - hosts: [romm.draggle-labs.net]
+      secretName: romm-draggle-labs-net-tls

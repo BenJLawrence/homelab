@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: romm-db
+  namespace: romm
+spec:
+  selector:
+    app: romm-db
+  ports:
+    - port: 3306
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: romm-db
+  namespace: romm
+spec:
+  serviceName: romm-db
+  replicas: 1
+  selector:
+    matchLabels:
+      app: romm-db
+  template:
+    metadata:
+      labels:
+        app: romm-db
+    spec:
+      containers:
+        - name: mariadb
+          image: mariadb:11.4          # pin a major version; don't use latest for a database
+          env:
+            - name: MARIADB_DATABASE
+              value: romm
+            - name: MARIADB_USER
+              value: romm-user
+            - name: MARIADB_PASSWORD
+              valueFrom: {secretKeyRef: {name: romm-secrets, key: MARIADB_PASSWORD}}
+            - name: MARIADB_ROOT_PASSWORD
+              valueFrom: {secretKeyRef: {name: romm-secrets, key: MARIADB_ROOT_PASSWORD}}
+          ports:
+            - containerPort: 3306
+          readinessProbe:
+            tcpSocket: {port: 3306}
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/mysql
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 5Gi
