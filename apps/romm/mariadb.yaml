@@ -25,6 +25,7 @@ spec:
       labels:
         app: romm-db
     spec:
+      enableServiceLinks: false
       containers:
         - name: mariadb
           image: mariadb:11.4          # pin a major version; don't use latest for a database
