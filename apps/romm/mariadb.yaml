@@ -25,6 +25,8 @@ spec:
       labels:
         app: romm-db
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: dragglenet # This is what pins it to a node with real storage
       enableServiceLinks: false
       containers:
         - name: mariadb
