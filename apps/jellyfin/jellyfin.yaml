@@ -28,6 +28,7 @@ spec:
       labels:
         app: jellyfin
     spec:
+      runtimeClassName: nvidia
       nodeSelector:
         kubernetes.io/hostname: draggle-net-leader
       containers:
@@ -38,6 +39,10 @@ spec:
           env:
             - name: JELLYFIN_PublishedServerUrl
               value: https://tv.draggle-labs.net
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: all
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: all
           readinessProbe:
             httpGet: {path: /health, port: 8096}
             periodSeconds: 10
@@ -46,6 +51,8 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 30
           resources:
+            limits: 
+              nvidia.com/gpu: 1
             requests:
               cpu: 250m
               memory: 512Mi
