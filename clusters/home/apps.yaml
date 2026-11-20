@@ -45,6 +45,7 @@ spec:
   interval: 10m
   dependsOn:
     - name: cert-manager-config
+    - name: nvidia-device-plugin
   path: ./apps/jellyfin
   prune: true
   wait: true
