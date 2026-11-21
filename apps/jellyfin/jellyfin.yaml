@@ -28,21 +28,21 @@ spec:
       labels:
         app: jellyfin
     spec:
-      # runtimeClassName: nvidia
+      runtimeClassName: nvidia
       nodeSelector:
         kubernetes.io/hostname: draggle-net-leader
       containers:
         - name: jellyfin
-          image: jellyfin/jellyfin:2026111613     # confirm the exact latest tag on Docker Hub
+          image: jellyfin/jellyfin:12.4    # confirm the exact latest tag on Docker Hub
           ports:
             - containerPort: 8096
           env:
             - name: JELLYFIN_PublishedServerUrl
               value: https://tv.draggle-labs.net
-            # - name: NVIDIA_DRIVER_CAPABILITIES
-            #   value: compute,video,utility
-            # - name: NVIDIA_VISIBLE_DEVICES
-            #   value: all
+            - name: NVIDIA_DRIVER_CAPABILITIES
+              value: compute,video,utility
+            - name: NVIDIA_VISIBLE_DEVICES
+              value: all
           readinessProbe:
             httpGet: {path: /health, port: 8096}
             periodSeconds: 10
@@ -51,8 +51,8 @@ spec:
             initialDelaySeconds: 60
             periodSeconds: 30
           resources:
-            # limits: 
-            #   nvidia.com/gpu: 1
+            limits: 
+              nvidia.com/gpu: 1
             requests:
               cpu: 250m
               memory: 512Mi
@@ -62,8 +62,7 @@ spec:
             - {name: media,  mountPath: /media}
       volumes:
         - name: config
-          emptyDir:
-            sizeLimit: 10Gi
+          persistentVolumeClaim: {claimName: jellyfin-config}
         - name: media
           hostPath:
             path: /srv/media
