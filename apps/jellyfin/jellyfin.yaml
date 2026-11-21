@@ -40,7 +40,7 @@ spec:
             - name: JELLYFIN_PublishedServerUrl
               value: https://tv.draggle-labs.net
             - name: NVIDIA_DRIVER_CAPABILITIES
-              value: all
+              value: compute,video,utility
             - name: NVIDIA_VISIBLE_DEVICES
               value: all
           readinessProbe:
