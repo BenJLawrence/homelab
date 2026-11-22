@@ -33,7 +33,7 @@ spec:
         kubernetes.io/hostname: draggle-net-leader
       containers:
         - name: jellyfin
-          image: jellyfin/jellyfin:10.11.11   # confirm the exact latest tag on Docker Hub
+          image: jellyfin/jellyfin:12.4   # confirm the exact latest tag on Docker Hub
           ports:
             - containerPort: 8096
           env:
