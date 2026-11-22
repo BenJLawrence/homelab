@@ -18,4 +18,4 @@ spec:
   accessModes: ["ReadWriteOnce"]
   resources:
     requests:
-      storage: 200Gi     # not enforced by local-path; check node free space
+      storage: 20Gi     # not enforced by local-path; check node free space
