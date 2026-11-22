@@ -68,8 +68,6 @@ spec:
             - {name: cache,  mountPath: /cache}
             - {name: media,  mountPath: /media}
       volumes:
-        - name: config
-          persistentVolumeClaim: {claimName: jellyfin-config}
         - name: media
           hostPath:
             path: /srv/media
