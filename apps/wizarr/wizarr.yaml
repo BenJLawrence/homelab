@@ -43,7 +43,7 @@ spec:
         fsGroup: 1000
       containers:
         - name: wizarr
-          image: ghcr.io/wizarrrr/wizarr:v2026.9.1   # latest tag I found; check for newer
+          image: ghcr.io/wizarrrr/wizarr:v2026.10.1   # latest tag I found; check for newer
           ports:
             - containerPort: 5690
           env:
