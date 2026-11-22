@@ -77,13 +77,25 @@ spec:
             - {name: media,  mountPath: /media}
       volumes:
         - name: config
-          #persistentVolumeClaim: {claimName: jellyfin-config}
+          persistentVolumeClaim: {claimName: jellyfin-config}
           emptyDir:
             sizeLimit: 10Gi
         - name: media
-          hostPath:
-            path: /srv/media
-            type: Directory
+          persistentVolumeClaim: {claimName: jellyfin-config}
+          # hostPath:
+          #   path: /srv/media
+          #   type: Directory
         - name: cache
           emptyDir:
             sizeLimit: 10Gi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-media
+  namespace: jellyfin
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 200Gi     # not enforced by local-path; check node free space
