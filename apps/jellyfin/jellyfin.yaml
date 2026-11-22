@@ -43,6 +43,14 @@ spec:
               value: compute,video,utility
             - name: NVIDIA_VISIBLE_DEVICES
               value: all
+            - name: DOTNET_EnableCrashReport
+              value: 1
+            - name: DOTNET_DbgEnableMiniDump
+              value: 1
+            - name: DOTNET_DbgMiniDumpType
+              value: 2
+            - name: DOTNET_DbgMiniDumpName
+              value: /config/crash-%p.dmp
           startupProbe:
             httpGet: {path: /health, port: 8096}
             periodSeconds: 10
