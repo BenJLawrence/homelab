@@ -1,0 +1,80 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: wizarr-data
+  namespace: wizarr
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: wizarr
+  namespace: wizarr
+spec:
+  selector:
+    app: wizarr
+  ports:
+    - port: 80
+      targetPort: 5690
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wizarr
+  namespace: wizarr
+spec:
+  replicas: 1
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: wizarr
+  template:
+    metadata:
+      labels:
+        app: wizarr
+    spec:
+      enableServiceLinks: false
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: wizarr
+          image: ghcr.io/wizarrrr/wizarr:v2026.9.1   # latest tag I found; check for newer
+          ports:
+            - containerPort: 5690
+          env:
+            - name: APP_URL
+              value: https://join.draggle-labs.net
+            - name: TZ
+              value: America/Chicago
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: DISABLE_BUILTIN_AUTH
+              value: "false"
+          readinessProbe:
+            httpGet: {path: /, port: 5690}
+            periodSeconds: 15
+            timeoutSeconds: 5
+            failureThreshold: 6
+          livenessProbe:
+            httpGet: {path: /, port: 5690}
+            periodSeconds: 30
+            timeoutSeconds: 10
+            failureThreshold: 6
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: wizarr-data
