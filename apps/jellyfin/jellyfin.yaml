@@ -76,7 +76,12 @@ spec:
             - {name: cache,  mountPath: /cache}
             - {name: media,  mountPath: /media}
       volumes:
-        
+        - name: config
+          persistentVolumeClaim: {claimName: jellyfin-config}
+          emptyDir:
+            sizeLimit: 10Gi
+        - name: media
+          persistentVolumeClaim: {claimName: jellyfin-config}
           # hostPath:
           #   path: /srv/media
           #   type: Directory
