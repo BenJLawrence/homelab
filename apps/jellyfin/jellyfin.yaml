@@ -51,7 +51,7 @@ spec:
               value: '2'
           startupProbe:
             httpGet: {path: /health, port: 8096}
-            periodSeconds: 10
+            periodSeconds: 11
             failureThreshold: 30        # up to 5 minutes to start
           readinessProbe:
             httpGet: {path: /health, port: 8096}
