@@ -28,6 +28,9 @@ spec:
       labels:
         app: jellyfin
     spec:
+      securityContext:
+        capabilities:
+          add: ["SYS_PTRACE"]
       runtimeClassName: nvidia
       nodeSelector:
         kubernetes.io/hostname: draggle-net-leader
