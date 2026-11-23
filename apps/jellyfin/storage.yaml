@@ -8,14 +8,14 @@ spec:
   resources:
     requests:
       storage: 10Gi      # metadata and artwork grow with library size
-# ---
-# apiVersion: v1
-# kind: PersistentVolumeClaim
-# metadata:
-#   name: jellyfin-media
-#   namespace: jellyfin
-# spec:
-#   accessModes: ["ReadWriteOnce"]
-#   resources:
-#     requests:
-#       storage: 20Gi     # not enforced by local-path; check node free space
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: jellyfin-media
+  namespace: jellyfin
+spec:
+  accessModes: ["ReadWriteOnce"]
+  resources:
+    requests:
+      storage: 20Gi     # not enforced by local-path; check node free space
