@@ -53,16 +53,16 @@ spec:
             httpGet: {path: /health, port: 8096}
             periodSeconds: 11
             failureThreshold: 30        # up to 5 minutes to start
-          readinessProbe:
-            httpGet: {path: /health, port: 8096}
-            periodSeconds: 15
-            timeoutSeconds: 5
-            failureThreshold: 6
-          livenessProbe:
-            httpGet: {path: /health, port: 8096}
-            periodSeconds: 30
-            timeoutSeconds: 10
-            failureThreshold: 6         # about 3 minutes of failures before a restart
+          # readinessProbe:
+          #   httpGet: {path: /health, port: 8096}
+          #   periodSeconds: 15
+          #   timeoutSeconds: 5
+          #   failureThreshold: 6
+          # livenessProbe:
+          #   httpGet: {path: /health, port: 8096}
+          #   periodSeconds: 30
+          #   timeoutSeconds: 10
+          #   failureThreshold: 6         # about 3 minutes of failures before a restart
           resources:
             limits: 
               nvidia.com/gpu: 1
