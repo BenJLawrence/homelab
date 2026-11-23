@@ -28,30 +28,26 @@ spec:
       labels:
         app: jellyfin
     spec:
-      securityContext:
-        capabilities:
-          add: ["SYS_PTRACE"]
-      runtimeClassName: nvidia
+      # runtimeClassName: nvidia
       nodeSelector:
         kubernetes.io/hostname: draggle-net-leader
       containers:
         - name: jellyfin
-          image: jellyfin/jellyfin:10.11.0   # confirm the exact latest tag on Docker Hub
+          securityContext:
+            capabilities:
+              add: ["SYS_PTRACE"]
+          image: jellyfin/jellyfin:12.4   # confirm the exact latest tag on Docker Hub
           ports:
             - containerPort: 8096
           env:
             - name: JELLYFIN_PublishedServerUrl
               value: https://tv.draggle-labs.net
-            - name: NVIDIA_DRIVER_CAPABILITIES
-              value: compute,video,utility
-            - name: NVIDIA_VISIBLE_DEVICES
-              value: all
             - name: DOTNET_EnableCrashReport
               value: '1'
             - name: DOTNET_DbgEnableMiniDump
               value: '1'
             - name: DOTNET_DbgMiniDumpType
-              value: '2'
+              value: '1'
             - name: DOTNET_DbgMiniDumpName
               value: /config/crash-%p.dmp
           startupProbe:
@@ -69,8 +65,6 @@ spec:
           #   timeoutSeconds: 10
           #   failureThreshold: 6         # about 3 minutes of failures before a restart
           resources:
-            limits: 
-              nvidia.com/gpu: 1
             requests:
               cpu: 250m
               memory: 512Mi
