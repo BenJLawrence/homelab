@@ -29,11 +29,14 @@ spec:
         app: jellyfin
     spec:
       # runtimeClassName: nvidia
+      enableServiceLinks: false
       nodeSelector:
         kubernetes.io/hostname: draggle-net-leader
       containers:
         - name: jellyfin
+          privleged: true
           securityContext:
+            privileged: true
             capabilities:
               add: ["SYS_PTRACE"]
           image: jellyfin/jellyfin:12.4   # confirm the exact latest tag on Docker Hub
